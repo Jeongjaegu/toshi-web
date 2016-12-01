@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs');
+const fs = require('mz/fs');
 const path = require('path');
 const process = require('process');
 
@@ -12,34 +12,43 @@ const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 
 const config = require('./contour');
-
-// If it's a Craft project we don't need to compile the templates
-if (config.templatingLanguage === 'craft') { return; }
-
-const minify = (process.argv[2] && process.argv[2] === 'minify') ? true : false;
 const { templates, dest } = config.paths;
+const minify = (process.argv[2] && process.argv[2] === 'minify') ? true : false;
 
-glob(`${templates}/**/*.${config.templatingLanguage}`, { ignore: ['node_modules/**', `${templates}/_*/**`] }, (error, files) => {
+const DEFAULT_LANG = 'en';
+
+glob('translations/*.json', (error, files) => {
   files.forEach(file => {
+    const lang = path.basename(file).split('.')[0];
+    const pathAddition = lang === DEFAULT_LANG ? '' : '/' + lang; 
+    fs.readFile(file, 'utf8').then(json => JSON.parse(json)).then(json => renderTemplates(pathAddition, json, lang));
+  });
+});
 
-    const fileCheck = file.split('/');
-    if (fileCheck[fileCheck.length - 1].startsWith('_')) { return; }
 
-    render(file)[config.templatingLanguage]().then(html => {
-      const outputPath = file.replace(templates, dest).replace(`.${config.templatingLanguage}`, '.html');
+function renderTemplates(pathAddition, data, lang) {
+  glob(`${templates}/**/*.${config.templatingLanguage}`, { ignore: ['node_modules/**', `${templates}/_*/**`] }, (error, files) => {
+    files.forEach(file => {
 
-      mkdirp(path.dirname(outputPath), error => {
-        if (error) { throw error; }
-        html = minify ? minifier(html, config.tasks.htmlmin.options) : html;
-        fs.writeFile(outputPath, html, error => {
+      const fileCheck = file.split('/');
+      if (fileCheck[fileCheck.length - 1].startsWith('_')) { return; }
+      data['lang'] = lang === DEFAULT_LANG ? null : lang; 
+
+      render(file, data)[config.templatingLanguage]().then(html => {
+        const outputPath = file.replace(templates, dest + pathAddition).replace(`.${config.templatingLanguage}`, '.html');
+        
+        mkdirp(path.dirname(outputPath), error => {
           if (error) { throw error; }
-          console.log(`${chalk.green('✓')} ${file} ${chalk.gray('compiled to')} ${outputPath}` );
+          html = minify ? minifier(html, config.tasks.htmlmin.options) : html;
+          fs.writeFile(outputPath, html, error => {
+            if (error) { throw error; }
+            console.log(`${chalk.green('✓')} ${file} ${chalk.gray('compiled to')} ${outputPath}` );
+          });
         });
       });
     });
   });
-});
-
+}
 
 Twig.extendFunction("importJSON", file => {
   const content = fs.readFileSync(`${templates}/data/${file}.json`, 'utf8');
@@ -48,7 +57,7 @@ Twig.extendFunction("importJSON", file => {
 
 let templateVariables = { env: minify ? 'prod' : 'dev' };
 
-function render(file) {
+function render(file, data) {
   return {
     twig,
     pug,
@@ -57,7 +66,7 @@ function render(file) {
 
   function twig() {
     return new Promise((resolve, reject) => {
-      Twig.renderFile(file, { contour: Object.assign(templateVariables, config.globals)  }, (error, html) => {
+      Twig.renderFile(file, data, (error, html) => {
         resolve(html);
       });
     });

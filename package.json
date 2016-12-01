@@ -27,8 +27,9 @@
     "dev:init": "mkdirp 'public' && npm run css && npm run svg && npm run templates && npm run copy",
     "build": "npm run build:init && npm run webpack:build && npm run rev",
     "build:init": "mkdirp 'public' && npm run clean && npm run svg && npm run templates:build && npm run css:build && npm run copy && npm run imagemin",
-    "prod": "npm run build:init && npm run webpack:prod && npm run rev",
-    "postinstall": "node tasks/postinstall"
+    "prod": "npm run build:init && npm run rev",
+    "postinstall": "node tasks/postinstall",
+    "gh-pages": "./deploy-gh-pages"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
