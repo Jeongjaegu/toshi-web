@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "Access An Open Financial System",
-    "text": "Token is a browser for the Ethereum network that provides universal access to financial services."
+    "text": "Toshi is a browser for the Ethereum network that provides universal access to financial services."
   },
   "features": [
     {
@@ -27,13 +27,13 @@
     "general": "General",
     "platform": "Platform",
     "documentation": "Documentation",
-    "copy": "© 2017 Token"
+    "copy": "© 2017 Toshi"
   },
   "aboutPage": {
     "hero": {
-      "title": "About Token",
+      "title": "About Toshi",
       "text": [
-        "Token is an <a href='https://github.com/tokenbrowser'>open source</a> browser for the Ethereum network. Our mission is to provide universal access to financial services."
+        "Toshi is an <a href='https://github.com/toshiapp'>open source</a> browser for the Ethereum network. Our mission is to provide universal access to financial services."
       ]
     },
     "sections": [
@@ -71,7 +71,7 @@
         "body": [
           {
             "type": "text",
-            "value": "Token is built like a web browser (we don't host any of the apps or have access to customer funds). It is a piece of software that runs on the customer's computer, and sensitive information (like private keys) never leave that computer."
+            "value": "Toshi is built like a web browser (we don't host any of the apps or have access to customer funds). It is a piece of software that runs on the customer's computer, and sensitive information (like private keys) never leave that computer."
           },
           {
             "type": "text",
@@ -79,7 +79,7 @@
           },
           {
             "type": "text",
-            "value": "Token uses a variety of open protocols, including the Signal protocol by Whisper Systems for end-to-end encrypted chat, the Ethereum network to transfer value, the SOFA protocol to enable third party apps, and (coming soon) the uPort identity protocol to store user profiles. <a href='http://developers.tokenbrowser.com/'>Read more</a>"
+            "value": "Toshi uses a variety of open protocols, including the Signal protocol by Whisper Systems for end-to-end encrypted chat, the Ethereum network to transfer value, the SOFA protocol to enable third party apps, and (coming soon) the uPort identity protocol to store user profiles. <a href='http://developers.toshi.org/'>Read more</a>"
           }
         ]
       }

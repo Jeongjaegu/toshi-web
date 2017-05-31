@@ -1,12 +1,13 @@
 #!/bin/bash
-if [ -d public ]; then
-    rm -rf public
-fi
-npm run prod
+#if [ -d public ]; then
+#    rm -rf public
+#fi
+#npm run prod
 cd public
-echo www.tokenbrowser.com > CNAME
+rm -rf .git
+echo www.toshi.org > CNAME
 git init
-git remote add gh-pages git@github.com:tokenbrowser/tokenbrowser.github.io.git
+git remote add gh-pages git@github.com:toshiapp/toshiapp.github.io.git
 git add .
 git commit -m "Build on $(date)"
 git push --force gh-pages master
