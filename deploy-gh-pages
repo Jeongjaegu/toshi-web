@@ -1,8 +1,8 @@
 #!/bin/bash
-#if [ -d public ]; then
-#    rm -rf public
-#fi
-#npm run prod
+if [ -d public ]; then
+    rm -rf public
+fi
+npm run prod
 cd public
 rm -rf .git
 echo www.toshi.org > CNAME
